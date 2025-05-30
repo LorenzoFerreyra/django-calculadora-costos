@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from .models import Producto
-from .forms import ComponenteProductoForm
+from .forms import ComponenteProductoForm, ProductoForm
 from django.template.loader import render_to_string
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import Group
 
 def producto_detail(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
@@ -84,3 +86,46 @@ def calculadora(request):
         'resultado': resultado,
         'mensaje': mensaje,
     })
+
+def about(request):
+    return render(request, 'about.html')
+
+def contact(request):
+    return render(request, 'contact.html')
+
+@login_required
+def backoffice(request):
+    productos = Producto.objects.all()
+    return render(request, 'backoffice.html', {'productos': productos})
+
+@login_required
+def producto_create(request):
+    if request.method == 'POST':
+        form = ProductoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('backoffice')
+    else:
+        form = ProductoForm()
+    return render(request, 'producto_form.html', {'form': form})
+
+@login_required
+def producto_edit(request, pk):
+    producto = get_object_or_404(Producto, pk=pk)
+    if request.method == 'POST':
+        form = ProductoForm(request.POST, instance=producto)
+        if form.is_valid():
+            form.save()
+            return redirect('backoffice')
+    else:
+        form = ProductoForm(instance=producto)
+    return render(request, 'producto_form.html', {'form': form})
+
+@login_required
+@user_passes_test(lambda u: u.is_staff)
+def producto_delete(request, pk):
+    producto = get_object_or_404(Producto, pk=pk)
+    if request.method == 'POST':
+        producto.delete()
+        return redirect('backoffice')
+    return render(request, 'producto_confirm_delete.html', {'producto': producto})
