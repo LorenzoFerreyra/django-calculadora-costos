@@ -8,7 +8,6 @@ class Insumo(models.Model):
         ("energia", "Energía"),
         ("mano_obra", "Mano de obra"),
     ]
-
     nombre = models.CharField(max_length=100)
     precio = models.DecimalField(max_digits=12, decimal_places=2)
     unidad = models.CharField(max_length=20, choices=[("kilo", "Kilo/Litro"), ("unidad", "Unidad")])
@@ -18,11 +17,12 @@ class Insumo(models.Model):
     def __str__(self):
         return f"{self.nombre} ({self.categoria})"
 
+
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)
     cantidad_producida = models.PositiveIntegerField(help_text="Cantidad de unidades producidas por receta base")
     unidades_por_combo = models.PositiveIntegerField(default=1)
-    margen_ganancia = models.DecimalField(max_digits=5, decimal_places=2, help_text="En porcentaje, por ejemplo 200 para 200%")
+    margen_ganancia = models.DecimalField(max_digits=5, decimal_places=2, help_text="Ej: 200 para 200%")
 
     def __str__(self):
         return self.nombre
@@ -38,12 +38,13 @@ class Producto(models.Model):
     def calcular_precio_venta_combo(self):
         return self.calcular_precio_combo() * (1 + self.margen_ganancia / 100)
 
+
 class ComponenteProducto(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name="componentes")
     insumo = models.ForeignKey(Insumo, on_delete=models.PROTECT)
-    cantidad_utilizada = models.DecimalField(max_digits=8, decimal_places=3, help_text="Cantidad utilizada (kg o unidades según insumo)")
+    cantidad_utilizada = models.DecimalField(max_digits=8, decimal_places=3)
 
     def costo_total(self):
         return self.insumo.precio * self.cantidad_utilizada
     def __str__(self):
-        return f"{self.cantidad_utilizada} {self.insumo.unidad} de {self.insumo.nombre} en {self.producto.nombre}"
+        return f"{self.insumo.nombre} ({self.cantidad_utilizada} {self.insumo.unidad}) en {self.producto.nombre}"

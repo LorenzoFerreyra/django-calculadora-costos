@@ -1,0 +1,20 @@
+<table>
+    <tr>
+        <th>Insumo</th>
+        <th>Cantidad usada</th>
+        <th>Precio insumo</th>
+        <th>Costo</th>
+    </tr>
+    {% for comp in producto.componentes.all %}
+    <tr>
+        <td>{{ comp.insumo.nombre }}</td>
+        <td>{{ comp.cantidad_utilizada }}</td>
+        <td>${{ comp.insumo.precio }}</td>
+        <td>${{ comp.costo_total|floatformat:2 }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<p><strong>Precio unitario:</strong> ${{ producto.calcular_precio_unitario|floatformat:2 }}</p>
+<p><strong>Precio combo:</strong> ${{ producto.calcular_precio_combo|floatformat:2 }}</p>
+<p><strong>Precio venta combo:</strong> ${{ producto.calcular_precio_venta_combo|floatformat:2 }}</p>
