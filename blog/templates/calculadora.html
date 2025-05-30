@@ -1,0 +1,88 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Emprendimientos</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            background-color: #1a1b26;
+            color: #a9b1d6;
+            font-family: 'Inter', sans-serif;
+        }
+        .content-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+        }
+        input, button {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid #414868;
+            background-color: #1a1b26;
+            color: #a9b1d6;
+            font-size: 1rem;
+        }
+        button {
+            margin-top: 1rem;
+            background-color: #7aa2f7;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        button:hover {
+            background-color: #5e8be0;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+
+        <!-- Encabezado -->
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <h1 style="font-size: 3rem; font-weight: 600;">Calculadora para Emprendimientos</h1>
+            <p style="font-size: 1.2rem;">Calculá fácilmente tus costos, márgenes y ganancias.</p>
+        </div>
+
+        <!-- Formulario de entrada -->
+        <div class="glass-card">
+            <form method="post">
+                {% csrf_token %}
+                <label for="costo_unitario">Costo unitario del producto:</label>
+                <input type="number" name="costo_unitario" id="costo_unitario" step="0.01" required>
+
+                <label for="precio_venta">Precio de venta:</label>
+                <input type="number" name="precio_venta" id="precio_venta" step="0.01" required>
+
+                <label for="cantidad">Cantidad vendida:</label>
+                <input type="number" name="cantidad" id="cantidad" required>
+
+                <button type="submit">Calcular</button>
+            </form>
+        </div>
+
+        <!-- Resultados -->
+        {% if resultado %}
+        <div class="glass-card">
+            <h3>Resultados</h3>
+            <p><strong>Ingreso total:</strong> ${{ resultado.ingreso_total }}</p>
+            <p><strong>Costo total:</strong> ${{ resultado.costo_total }}</p>
+            <p><strong>Ganancia neta:</strong> ${{ resultado.ganancia }}</p>
+            <p><strong>Margen (%):</strong> {{ resultado.margen }}%</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
