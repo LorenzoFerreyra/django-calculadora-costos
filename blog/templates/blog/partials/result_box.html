@@ -1,0 +1,16 @@
+{% if resultado %}
+<div class="result-box">
+    <h5 class="fw-semibold mb-3">Resultados</h5>
+    <div><strong>Ingreso total:</strong> ${{ resultado.ingreso_total }}</div>
+    <div><strong>Costo total:</strong> ${{ resultado.costo_total }}</div>
+    <div><strong>Ganancia neta:</strong> ${{ resultado.ganancia }}</div>
+    <div><strong>Margen (%):</strong> {{ resultado.margen }}%</div>
+    {% if resultado.ganancia < 0 %}
+    <div class="alert alert-danger mt-3">¡Atención! Estás perdiendo plata.</div>
+    {% elif resultado.ganancia == 0 %}
+    <div class="alert alert-warning mt-3">No ganás ni perdés. ¡Revisá tus precios!</div>
+    {% else %}
+    <div class="alert alert-success mt-3">¡Felicitaciones! Estás ganando plata.</div>
+    {% endif %}
+</div>
+{% endif %}

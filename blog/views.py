@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from .models import Producto
 from .forms import ComponenteProductoForm
+from django.template.loader import render_to_string
 
 def producto_detail(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
@@ -24,11 +25,12 @@ def agregar_componente(request, producto_id):
     })
 
 def calculadora(request):
-    # Initialize session costs if not present
     if 'costos' not in request.session:
         request.session['costos'] = []
     costos = request.session['costos']
     mensaje = ''
+    resultado = None
+    htmx = request.headers.get('HX-Request') == 'true'
 
     # Handle adding a new cost
     if request.method == 'POST' and 'agregar_costo' in request.POST:
@@ -43,13 +45,17 @@ def calculadora(request):
                 mensaje = 'Por favor, ingrese un nombre y un valor válido.'
         except ValueError:
             mensaje = 'El valor debe ser un número.'
+        if htmx:
+            html = render_to_string('blog/partials/costos_list.html', {'costos': costos, 'mensaje': mensaje}, request=request)
+            return render(request, 'blog/partials/costos_list.html', {'costos': costos, 'mensaje': mensaje})
 
     # Handle clearing all costs
     if request.method == 'POST' and 'limpiar_costos' in request.POST:
         request.session['costos'] = []
         costos = []
+        if htmx:
+            return render(request, 'blog/partials/costos_list.html', {'costos': costos, 'mensaje': mensaje})
 
-    resultado = None
     # Handle calculation
     if request.method == 'POST' and 'calcular' in request.POST:
         precio_venta = request.POST.get('precio_venta', '').strip()
@@ -69,7 +75,10 @@ def calculadora(request):
             }
         except (ValueError, ZeroDivisionError):
             mensaje = 'Por favor, complete todos los campos correctamente.'
+        if htmx:
+            return render(request, 'blog/partials/result_box.html', {'resultado': resultado})
 
+    # Normal full page render
     return render(request, 'calculadora.html', {
         'costos': costos,
         'resultado': resultado,

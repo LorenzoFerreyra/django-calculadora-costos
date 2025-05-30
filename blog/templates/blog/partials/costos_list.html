@@ -1,0 +1,22 @@
+<div class="cost-list">
+    <h5>Lista de costos</h5>
+    {% if costos %}
+    <ul class="list-group mb-2">
+        {% for c in costos %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ c.nombre }}
+            <span class="badge">${{ c.valor }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+    <form method="post" hx-post="." hx-target="#costos-list" hx-swap="outerHTML" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" name="limpiar_costos" class="btn btn-sm btn-danger">Limpiar costos</button>
+    </form>
+    {% else %}
+    <p class="text-muted">No agregaste ningún costo todavía.</p>
+    {% endif %}
+    {% if mensaje %}
+    <div class="alert alert-warning mt-2">{{ mensaje }}</div>
+    {% endif %}
+</div>
