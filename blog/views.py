@@ -5,6 +5,8 @@ from .forms import ComponenteProductoForm, ProductoForm
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import Group
+import openpyxl
+from django.http import HttpResponse
 
 def producto_detail(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
@@ -129,3 +131,16 @@ def producto_delete(request, pk):
         producto.delete()
         return redirect('backoffice')
     return render(request, 'producto_confirm_delete.html', {'producto': producto})
+
+def export_productos_excel(request):
+    productos = Producto.objects.all()
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = 'Productos'
+    ws.append(['Nombre', 'Cantidad producida', 'Margen (%)'])
+    for p in productos:
+        ws.append([p.nombre, p.cantidad_producida, float(p.margen_ganancia)])
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=productos.xlsx'
+    wb.save(response)
+    return response

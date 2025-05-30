@@ -14,4 +14,5 @@ urlpatterns = [
     path('producto/<int:producto_id>/agregar-componente/', views.agregar_componente, name='agregar_componente'),
     path('producto/<int:pk>/edit/', views.producto_edit, name='producto_edit'),
     path('producto/<int:pk>/delete/', views.producto_delete, name='producto_delete'),
+    path('export/excel/', views.export_productos_excel, name='export_productos_excel'),
 ]
