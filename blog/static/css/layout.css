@@ -11,51 +11,10 @@ File: Layout CSS
 @import url("fontawesome-4.3.0.min.css");
 @import url("framework.css");
 
-/* Rows
---------------------------------------------------------------------------------------------------------------- */
-.row0{border-bottom:1px solid;}
-.row1, .row1 a{}
-.row2, .row2 a{}
-.row3, .row3 a{}
-.row4, .row4 a{}
-.row5, .row5 a{}
-.row6, .row6 a{}
+/* Only keep layout/utility classes, remove body, navbar, card, button, and table styles to avoid conflicts. */
 
-
-/* Top Bar
---------------------------------------------------------------------------------------------------------------- */
-#topbar{padding:12px 0; font-size:12px;}
-
-#topbar .fl_left{margin-top:4px;}
-#topbar .fl_left .inline > li{margin-right:15px;}
-#topbar .fl_left .inline > li i{margin:0 5px 0 0; line-height:normal;}
-
-#topbar .faico li{margin:0;}
-
-
-/* Header
---------------------------------------------------------------------------------------------------------------- */
-#header{padding:30px 0 20px;}
-
-#header #logo{}
-#header #logo h1{margin:0; padding:0; text-transform:uppercase;}
-
-
-/* PageIntro
---------------------------------------------------------------------------------------------------------------- */
-#pageintro{padding:160px 0 80px;}
-
-#pageintro .services article{margin:0;}
-#pageintro .services .heading{font-size:16px; text-transform:uppercase;}
-#pageintro .services i{border:1px solid;}
-#pageintro .services footer{text-align:right;}
-
-
-/* Content Area
---------------------------------------------------------------------------------------------------------------- */
+/* Content Area */
 .container{padding:80px 0;}
-
-/* Content */
 .container .content{}
 
 /* Comments */
@@ -66,7 +25,6 @@ File: Layout CSS
 #comments time{font-size:smaller;}
 #comments .comcont{display:block; margin:0; padding:0;}
 #comments .comcont p{margin:10px 5px 10px 0; padding:0;}
-
 #comments form{display:block; width:100%;}
 #comments input, #comments textarea{width:100%; padding:10px; border:1px solid;}
 #comments textarea{overflow:auto;}
@@ -75,39 +33,26 @@ File: Layout CSS
 
 /* Sidebar */
 .container .sidebar{}
-
 .sidebar .sdb_holder{margin-bottom:50px;}
 .sidebar .sdb_holder:last-child{margin-bottom:0;}
 
-
-/* Info
---------------------------------------------------------------------------------------------------------------- */
+/* Info */
 #info{padding:80px 0;}
-
 #info .services article{margin-bottom:35px; border:1px solid;}
 
-
-/* Footer
---------------------------------------------------------------------------------------------------------------- */
+/* Footer */
 #footer{padding:50px 0;}
-
 #footer .title{margin:0 0 30px 0; padding:0 0 8px 0; border-bottom:1px solid; font-size:16px; text-transform:uppercase;}
-
 #footer .linklist li{margin-bottom:10px;}
 #footer .linklist li:last-child{margin-bottom:0;}
-
 #footer .smallfont{font-size:.8rem; margin:0;}
-
 #footer input, #footer button{border:none;}
 #footer input{display:block; width:100%; padding:8px;}
 #footer button{padding:6px 12px 8px; font-weight:bold; text-transform:uppercase; cursor:pointer;}
 
-
-/* Copyright
---------------------------------------------------------------------------------------------------------------- */
+/* Copyright */
 #copyright{padding:20px 0;}
 #copyright *{margin:0; padding:0;}
-
 
 /* Transition Fade
 --------------------------------------------------------------------------------------------------------------- */
