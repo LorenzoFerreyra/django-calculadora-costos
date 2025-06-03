@@ -14,7 +14,8 @@
         <button type="submit" name="limpiar_costos" class="btn btn-sm btn-danger">Limpiar costos</button>
     </form>
     {% else %}
-    <p class="text-muted">No agregaste ningún costo todavía.</p>
+    <div style="background-color: white; padding: 1rem; border-radius: 0.25rem;">
+    <p class="text-muted" >No agregaste ningún costo todavía.</p>
     {% endif %}
     {% if mensaje %}
     <div class="alert alert-warning mt-2">{{ mensaje }}</div>
