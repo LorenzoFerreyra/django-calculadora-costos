@@ -1,14 +1,6 @@
 # TravelBudgetCalculator
 A travel budget calculator using python Django framework with HTML/CSS/Bootstrap/JavaScript/JQuery/Ajax.
 
-
-<img src="https://github.com/AtaUllahB/TravelBudgetCalculator/blob/master/Screenshots/Loading.png?raw=true">
-<img src="https://github.com/AtaUllahB/TravelBudgetCalculator/blob/master/Screenshots/Main_page.png?raw=true">
-<img src="https://github.com/AtaUllahB/TravelBudgetCalculator/blob/master/Screenshots/one.png?raw=true">
-<img src="https://github.com/AtaUllahB/TravelBudgetCalculator/blob/master/Screenshots/two.png?raw=true">
-
-
-
 How to run:
 step 1 : 
 Create and activate virtual Environment 
