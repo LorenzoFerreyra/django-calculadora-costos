@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import Group
 import openpyxl
 from django.http import HttpResponse
+from django.contrib.auth import logout
 
 def producto_detail(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
@@ -110,6 +111,11 @@ def producto_create(request):
     else:
         form = ProductoForm()
     return render(request, 'producto_form.html', {'form': form})
+
+@login_required
+def log_out(request):
+    log_out(request)
+    return redirect('calculadora')
 
 @login_required
 def producto_edit(request, pk):
