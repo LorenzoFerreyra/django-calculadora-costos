@@ -1,194 +1,152 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Calculadora para Emprendedores Sociales</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <style>
-        body {
-            background: linear-gradient(135deg, #232526 0%, #414345 100%);
-            color: #f3f3f3;
-            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-            min-height: 100vh;
-        }
-        .calculator-card {
-            max-width: 540px;
-            margin: 2.5rem auto;
-            background: rgba(40, 44, 52, 0.98);
-            border-radius: 18px;
-            box-shadow: 0 4px 24px 0 rgba(0,0,0,0.18);
-            padding: 2.2rem 2rem 2rem 2rem;
-            border: 1.5px solid #3a3f4b;
-            transition: box-shadow 0.2s;
-        }
-        .calculator-card:hover {
-            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.28);
-        }
-        .result-box {
-            background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
-            color: #222;
-            border-radius: 12px;
-            padding: 1.2rem;
-            margin-top: 1.5rem;
-            box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
-            font-size: 1.1rem;
-        }
-        .footer {
-            color: #b0b0b0;
-            font-size: 0.98em;
-        }
-        .cost-list {
-            background: rgba(255,255,255,0.04);
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 1.2rem;
-            border: 1px solid #353a45;
-        }
-        .list-group-item {
-            background: rgba(255,255,255,0.07);
-            color: #f3f3f3;
-            border: none;
-            border-radius: 6px;
-            margin-bottom: 0.3rem;
-            transition: background 0.2s;
-        }
-        .list-group-item .badge {
-            background: #00d2ff;
-            color: #232526;
-            font-size: 1em;
-        }
-        .btn-primary, .btn-success {
-            border-radius: 8px;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-            box-shadow: 0 2px 8px 0 rgba(0,210,255,0.08);
-            transition: background 0.2s, color 0.2s;
-        }
-        .btn-primary {
-            background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
-            border: none;
-            color: #232526;
-        }
-        .btn-primary:hover {
-            background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
-            color: #fff;
-        }
-        .btn-success {
-            background: linear-gradient(90deg, #27ae60 0%, #00d2ff 100%);
-            border: none;
-            color: #232526;
-        }
-        .btn-success:hover {
-            background: linear-gradient(90deg, #00d2ff 0%, #27ae60 100%);
-            color: #fff;
-        }
-        .btn-danger {
-            border-radius: 8px;
-        }
-        .form-label {
-            color: #b0e0ff;
-            font-weight: 500;
-        }
-        input[type="text"], input[type="number"] {
-            background: #232526;
-            color: #f3f3f3;
-            border: 1.5px solid #3a3f4b;
-            border-radius: 8px;
-            padding: 0.7rem;
-            margin-bottom: 0.5rem;
-            font-size: 1.05rem;
-            transition: border 0.2s;
-        }
-        input[type="text"]:focus, input[type="number"]:focus {
-            border: 1.5px solid #00d2ff;
-            outline: none;
-        }
-        .alert {
-            border-radius: 8px;
-            font-size: 1.05em;
-        }
-        h2, h5, h3 {
-            color: #00d2ff;
-            font-weight: 700;
-        }
-        .navbar {
-            background: rgba(40, 44, 52, 0.98)!important;
-            border-bottom: 1.5px solid #3a3f4b;
-        }
-        .navbar-brand {
-            color: #00d2ff!important;
-            font-weight: 700;
-            letter-spacing: 0.03em;
-        }
-        .nav-link {
-            color: #b0e0ff!important;
-            font-weight: 500;
-        }
-        .nav-link:hover {
-            color: #fff!important;
-        }
-    </style>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">Calculadora Social</a>
-            <div class="collapse navbar-collapse justify-content-end">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="#">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Sobre</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Iniciar sesión (opcional)</a></li>
-                </ul>
-            </div>
+{% block content %}
+<div class="calculator-card">
+    <h2 class="mb-2 text-center">Calculadora de Costos para Emprendedores</h2>
+    <p class="text-center text-muted mb-4" style="color:#b0e0ff!important;">Sumá tus costos, calculá tu ganancia y descubrí si tu producto te deja plata.</p>
+
+    <div id="costos-list">
+        {% include 'blog/partials/costos_list.html' %}
+    </div>
+
+    <form method="post" class="mb-4" hx-post="." hx-target="#costos-list" hx-swap="outerHTML">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">Nombre del costo</label>
+            <input type="text" name="nombre" class="form-control" placeholder="Ej: Pan, carne, gas, etc." required>
         </div>
-    </nav>
-
-    <main>
-        <div class="calculator-card">
-            <h2 class="mb-2 text-center">Calculadora de Costos para Emprendedores</h2>
-            <p class="text-center text-muted mb-4" style="color:#b0e0ff!important;">Sumá tus costos, calculá tu ganancia y descubrí si tu producto te deja plata.</p>
-
-            <div id="costos-list">
-                {% include 'blog/partials/costos_list.html' %}
-            </div>
-
-            <form method="post" class="mb-4" hx-post="." hx-target="#costos-list" hx-swap="outerHTML">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label class="form-label">Nombre del costo</label>
-                    <input type="text" name="nombre" class="form-control" placeholder="Ej: Pan, carne, gas, etc." required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Valor ($)</label>
-                    <input type="number" step="0.01" min="0" name="valor" class="form-control" placeholder="Ej: 100" required>
-                </div>
-                <button type="submit" name="agregar_costo" class="btn btn-success w-100">Agregar costo</button>
-            </form>
-
-            <form method="post" hx-post="." hx-target="#result-box" hx-swap="outerHTML">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label class="form-label">Precio de venta por producto ($)</label>
-                    <input type="number" step="0.01" min="0" name="precio_venta" class="form-control" placeholder="Ej: 200" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Cantidad que pensás vender</label>
-                    <input type="number" min="1" name="cantidad" class="form-control" placeholder="Ej: 10" required>
-                </div>
-                <button type="submit" name="calcular" class="btn btn-primary w-100">Calcular ganancia</button>
-            </form>
-
-            <div id="result-box">
-                {% include 'blog/partials/result_box.html' %}
-            </div>
+        <div class="mb-3">
+            <label class="form-label">Valor ($)</label>
+            <input type="number" step="0.01" min="0" name="valor" class="form-control" placeholder="Ej: 100" required>
         </div>
-    </main>
+        <button type="submit" name="agregar_costo" class="btn btn-success w-100">Agregar costo</button>
+    </form>
 
-    <footer class="footer text-center mt-5 mb-3">
-        © 2025 Tu Emprendimiento &middot; <a href="#">Contacto</a>
-    </footer>
-</body>
-</html>
+    <form method="post" hx-post="." hx-target="#result-box" hx-swap="outerHTML">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">Precio de venta por producto ($)</label>
+            <input type="number" step="0.01" min="0" name="precio_venta" class="form-control" placeholder="Ej: 200" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Cantidad que pensás vender</label>
+            <input type="number" min="1" name="cantidad" class="form-control" placeholder="Ej: 10" required>
+        </div>
+        <button type="submit" name="calcular" class="btn btn-primary w-100">Calcular ganancia</button>
+    </form>
+
+    <div id="result-box">
+        {% include 'blog/partials/result_box.html' %}
+    </div>
+</div>
+{% endblock %}
+{% block extra_head %}
+<style>
+    body {
+        background: linear-gradient(135deg, #232526 0%, #414345 100%);
+        color: #f3f3f3;
+        font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+        min-height: 100vh;
+    }
+    .calculator-card {
+        max-width: 540px;
+        margin: 2.5rem auto;
+        background: rgba(40, 44, 52, 0.98);
+        border-radius: 18px;
+        box-shadow: 0 4px 24px 0 rgba(0,0,0,0.18);
+        padding: 2.2rem 2rem 2rem 2rem;
+        border: 1.5px solid #3a3f4b;
+        transition: box-shadow 0.2s;
+    }
+    .calculator-card:hover {
+        box-shadow: 0 8px 32px 0 rgba(0,0,0,0.28);
+    }
+    .result-box {
+        background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+        color: #222;
+        border-radius: 12px;
+        padding: 1.2rem;
+        margin-top: 1.5rem;
+        box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+        font-size: 1.1rem;
+    }
+    .footer {
+        color: #b0b0b0;
+        font-size: 0.98em;
+    }
+    .cost-list {
+        background: rgba(255,255,255,0.04);
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1.2rem;
+        border: 1px solid #353a45;
+    }
+    .list-group-item {
+        background: rgba(255,255,255,0.07);
+        color: #f3f3f3;
+        border: none;
+        border-radius: 6px;
+        margin-bottom: 0.3rem;
+        transition: background 0.2s;
+    }
+    .list-group-item .badge {
+        background: #00d2ff;
+        color: #232526;
+        font-size: 1em;
+    }
+    .btn-primary, .btn-success {
+        border-radius: 8px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        box-shadow: 0 2px 8px 0 rgba(0,210,255,0.08);
+        transition: background 0.2s, color 0.2s;
+    }
+    .btn-primary {
+        background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+        border: none;
+        color: #232526;
+    }
+    .btn-primary:hover {
+        background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+        color: #fff;
+    }
+    .btn-success {
+        background: linear-gradient(90deg, #27ae60 0%, #00d2ff 100%);
+        border: none;
+        color: #232526;
+    }
+    .btn-success:hover {
+        background: linear-gradient(90deg, #00d2ff 0%, #27ae60 100%);
+        color: #fff;
+    }
+    .btn-danger {
+        border-radius: 8px;
+    }
+    .form-label {
+        color: #b0e0ff;
+        font-weight: 500;
+    }
+    input[type="text"], input[type="number"] {
+        background: #232526;
+        color: #f3f3f3;
+        border: 1.5px solid #3a3f4b;
+        border-radius: 8px;
+        padding: 0.7rem;
+        margin-bottom: 0.5rem;
+        font-size: 1.05rem;
+        transition: border 0.2s;
+    }
+    input[type="text"]:focus, input[type="number"]:focus {
+        border: 1.5px solid #00d2ff;
+        outline: none;
+    }
+    .alert {
+        border-radius: 8px;
+        font-size: 1.05em;
+    }
+    h2, h5, h3 {
+        color: #00d2ff;
+        font-weight: 700;
+    }
+</style>
+{% endblock %}
