@@ -1,5 +1,6 @@
-# TravelBudgetCalculator
-A travel budget calculator using python Django framework with HTML/CSS/Bootstrap/JavaScript/JQuery/Ajax.
+# Calculadora de costos para emprendedores
+# Business Cost Calculator
+A business cost calculator calculator using python Django framework with HTML/CSS/Bootstrap/JavaScript/JQuery/Ajax.
 
 How to run:
 step 1 : 
