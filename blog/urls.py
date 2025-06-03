@@ -8,7 +8,7 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
+    path('logout/', views.logout, name='logout'),
     path('producto/create/', views.producto_create, name='producto_create'),
     path('producto/<int:pk>/', views.producto_detail, name='producto_detail'),
     path('producto/<int:producto_id>/agregar-componente/', views.agregar_componente, name='agregar_componente'),

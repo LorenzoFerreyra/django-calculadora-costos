@@ -46,12 +46,12 @@ def calculadora(request):
             if nombre and valor >= 0:
                 costos.append({'nombre': nombre, 'valor': valor})
                 request.session['costos'] = costos
+                request.session.modified = True  # <-- Ensure session is saved!
             else:
                 mensaje = 'Por favor, ingrese un nombre y un valor válido.'
         except ValueError:
             mensaje = 'El valor debe ser un número.'
         if htmx:
-            html = render_to_string('blog/partials/costos_list.html', {'costos': costos, 'mensaje': mensaje}, request=request)
             return render(request, 'blog/partials/costos_list.html', {'costos': costos, 'mensaje': mensaje})
 
     # Handle clearing all costs
